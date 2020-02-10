@@ -1,6 +1,8 @@
 FROM rekgrpth/gost
-ENV GROUP=pgadmin \
-    USER=pgadmin
+ADD entrypoint.sh /
+CMD [ "/usr/local/pgadmin3/bin/pgadmin3" ]
+ENV GROUP=pgadmin3 \
+    USER=pgadmin3
 VOLUME "${HOME}"
 RUN set -ex \
     && addgroup -S "${GROUP}" \
@@ -32,4 +34,5 @@ RUN set -ex \
         postgresql-client \
         ttf-liberation \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
-    && apk del --no-cache .build-deps
+    && apk del --no-cache .build-deps \
+    && chmod +x /entrypoint.sh
