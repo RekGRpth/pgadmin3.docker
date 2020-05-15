@@ -17,7 +17,7 @@ docker run \
     --env USER_ID=$(id -u) \
     --hostname pgadmin3 \
     --mount type=bind,source=/etc/certs,destination=/etc/certs,readonly \
-    --mount type=bind,source=/tmp/.X11-unix,destination=/tmp/.X11-unix \
+    --mount type=bind,source=/tmp/.X11-unix,destination=/tmp/.X11-unix,readonly \
     --mount type=volume,source=pgadmin3,destination=/home \
     --name pgadmin3 \
     --network docker \
