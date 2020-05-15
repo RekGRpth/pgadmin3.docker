@@ -1,6 +1,6 @@
 FROM rekgrpth/gost
 ADD entrypoint.sh /
-CMD [ "/usr/local/pgadmin3/bin/pgadmin3" ]
+CMD [ "su-exec", "pgadmin3", "/usr/local/pgadmin3/bin/pgadmin3" ]
 ENV GROUP=pgadmin3 \
     USER=pgadmin3
 VOLUME "${HOME}"
