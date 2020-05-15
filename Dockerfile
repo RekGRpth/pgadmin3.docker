@@ -1,5 +1,4 @@
 FROM rekgrpth/gost
-ADD entrypoint.sh /
 CMD [ "su-exec", "pgadmin3", "/usr/local/pgadmin3/bin/pgadmin3" ]
 ENV GROUP=pgadmin3 \
     USER=pgadmin3
@@ -35,4 +34,4 @@ RUN set -ex \
         ttf-liberation \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | awk 'system("[ -e /usr/local/lib/" $1 " ]") == 0 { next } { print "so:" $1 }') \
     && apk del --no-cache .build-deps \
-    && chmod +x /entrypoint.sh
+    && echo DOne
