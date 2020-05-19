@@ -26,7 +26,7 @@ RUN set -ex \
     && git clone --recursive https://github.com/RekGRpth/pgadmin3.git \
     && cd /usr/src/pgadmin3 \
     && ./bootstrap \
-    && ./configure --prefix=/usr/local --with-wx-version=3.0 --with-openssl --enable-databasedesigner --with-libgcrypt \
+    && ./configure --prefix=/usr/local --with-wx-version=3.0 --with-openssl --enable-databasedesigner --with-libgcrypt --enable-debug \
     && make -j"$(nproc)" install \
     && (strip /usr/local/bin/* /usr/local/lib/*.so || true) \
     && apk add --no-cache --virtual .pgadmin-rundeps \
