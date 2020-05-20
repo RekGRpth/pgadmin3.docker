@@ -2,11 +2,11 @@
 
 #docker build --tag rekgrpth/pgadmin3 .
 #docker push rekgrpth/pgadmin3
-docker stop pgadmin3 || echo $?
-docker rm pgadmin3 || echo $?
 docker pull rekgrpth/pgadmin3
 docker volume create pgadmin3
-docker network create --opt com.docker.network.bridge.name=docker docker || echo $?
+docker network create --attachable --opt com.docker.network.bridge.name=docker docker || echo $?
+docker stop pgadmin3 || echo $?
+docker rm pgadmin3 || echo $?
 docker run \
     --detach \
     --env DISPLAY=:0.0 \
