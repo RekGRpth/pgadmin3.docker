@@ -18,7 +18,6 @@ docker run \
     --hostname pgadmin3 \
     --mount type=bind,source=/etc/certs,destination=/etc/certs,readonly \
     --mount type=bind,source=/tmp/.X11-unix,destination=/tmp/.X11-unix,readonly \
-    --mount type=bind,source=$HOME/.Xauthority,destination=/home/.Xauthority,readonly \
     --mount type=volume,source=pgadmin,destination=/home \
     --name pgadmin3 \
     --network docker \
