@@ -1,7 +1,7 @@
 FROM rekgrpth/gost
-CMD [ "su-exec", "pgadmin3", "pgadmin3" ]
-ENV GROUP=pgadmin3 \
-    USER=pgadmin3
+CMD [ "su-exec", "pgadmin", "pgadmin3" ]
+ENV GROUP=pgadmin \
+    USER=pgadmin
 VOLUME "${HOME}"
 RUN set -ex \
     && addgroup -S "${GROUP}" \
