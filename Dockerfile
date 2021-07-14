@@ -29,13 +29,15 @@ RUN set -eux; \
     ./bootstrap; \
     ./configure --prefix=/usr/local --with-wx-version=3.0 --with-openssl --enable-databasedesigner --with-libgcrypt --enable-debug; \
     make -j"$(nproc)" install; \
-    (strip /usr/local/bin/* /usr/local/lib/*.so || true); \
     apk add --no-cache --virtual .pgadmin-rundeps \
         postgresql-client \
         su-exec \
         ttf-liberation \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
     ; \
+    (strip /usr/local/bin/* /usr/local/lib/*.so || true); \
     apk del --no-cache .build-deps; \
     rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
+    find / -name "*.a" -delete; \
+    find / -name "*.la" -delete; \
     echo done
