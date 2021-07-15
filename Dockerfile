@@ -22,13 +22,14 @@ RUN set -eux; \
         postgresql-dev \
         wxgtk-dev \
     ; \
-    mkdir -p /usr/src; \
-    cd /usr/src; \
+    mkdir -p "${HOME}"; \
+    cd "${HOME}"; \
     git clone --recursive https://github.com/RekGRpth/pgadmin3.git; \
-    cd /usr/src/pgadmin3; \
+    cd "${HOME}/pgadmin3"; \
     ./bootstrap; \
     ./configure --prefix=/usr/local --with-wx-version=3.0 --with-openssl --enable-databasedesigner --with-libgcrypt --enable-debug; \
     make -j"$(nproc)" install; \
+    cd "${HOME}"; \
     apk add --no-cache --virtual .pgadmin-rundeps \
         postgresql-client \
         su-exec \
@@ -37,7 +38,7 @@ RUN set -eux; \
     ; \
     find /usr/local/bin /usr/local/lib -type f -exec strip '{}' \;; \
     apk del --no-cache .build-deps; \
-    rm -rf /usr/src /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
-    find / -name "*.a" -delete; \
-    find / -name "*.la" -delete; \
+    find / -type f -name "*.a" -delete; \
+    find / -type f -name "*.la" -delete; \
+    rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     echo done
