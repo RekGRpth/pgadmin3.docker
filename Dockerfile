@@ -22,10 +22,10 @@ RUN set -eux; \
         postgresql-dev \
         wxgtk-dev \
     ; \
-    mkdir -p "${HOME}"; \
-    cd "${HOME}"; \
-    git clone --recursive https://github.com/RekGRpth/pgadmin3.git; \
-    cd "${HOME}/pgadmin3"; \
+    mkdir -p "${HOME}/src"; \
+    cd "${HOME}/src"; \
+    git clone https://github.com/RekGRpth/pgadmin3.git; \
+    cd "${HOME}/src/pgadmin3"; \
     ./bootstrap; \
     ./configure --prefix=/usr/local --with-wx-version=3.0 --with-openssl --enable-databasedesigner --with-libgcrypt --enable-debug; \
     make -j"$(nproc)" install; \
