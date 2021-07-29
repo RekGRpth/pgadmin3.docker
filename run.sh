@@ -1,8 +1,6 @@
-#!/bin/sh -ex
+#!/bin/sh -eux
 
-#docker build --tag rekgrpth/pgadmin3 .
-#docker push rekgrpth/pgadmin3
-docker pull rekgrpth/pgadmin3
+docker pull ghcr.io/rekgrpth/pgadmin3.docker
 docker volume create pgadmin
 docker network create --attachable --opt com.docker.network.bridge.name=docker docker || echo $?
 docker stop pgadmin3 || echo $?
@@ -21,4 +19,4 @@ docker run \
     --mount type=volume,source=pgadmin,destination=/home \
     --name pgadmin3 \
     --network docker \
-    rekgrpth/pgadmin3
+    ghcr.io/rekgrpth/pgadmin3.docker

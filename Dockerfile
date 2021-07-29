@@ -1,4 +1,4 @@
-FROM rekgrpth/gost
+FROM ghcr.io/rekgrpth/gost.docker
 CMD [ "su-exec", "pgadmin", "pgadmin3" ]
 ENV GROUP=pgadmin \
     USER=pgadmin
