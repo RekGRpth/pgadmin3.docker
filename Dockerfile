@@ -2,7 +2,6 @@ FROM rekgrpth/gost
 CMD [ "su-exec", "pgadmin", "pgadmin3" ]
 ENV GROUP=pgadmin \
     USER=pgadmin
-VOLUME "${HOME}"
 RUN set -eux; \
     addgroup -S "${GROUP}"; \
     adduser -D -S -h "${HOME}" -s /sbin/nologin -G "${GROUP}" "${USER}"; \
@@ -31,7 +30,7 @@ RUN set -eux; \
     ./bootstrap; \
     ./configure --prefix=/usr/local --with-wx-version=3.0 --with-openssl --enable-databasedesigner --with-libgcrypt --enable-debug; \
     make -j"$(nproc)" install; \
-    cd "${HOME}"; \
+    cd /; \
     apk add --no-cache --virtual .pgadmin-rundeps \
         postgresql-client \
         su-exec \
@@ -41,7 +40,7 @@ RUN set -eux; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
     apk del --no-cache .build-deps; \
-    find / -type f -name "*.a" -delete; \
-    find / -type f -name "*.la" -delete; \
+    find /usr -type f -name "*.a" -delete; \
+    find /usr -type f -name "*.la" -delete; \
     rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     echo done
