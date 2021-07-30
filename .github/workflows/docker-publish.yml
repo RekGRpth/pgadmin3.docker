@@ -5,7 +5,7 @@ on:
       - latest
   repository_dispatch:
     types:
-      - push
+      - latest
 jobs:
   build:
     env:
