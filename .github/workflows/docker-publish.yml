@@ -15,10 +15,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ github.token }}
     name: ${{ github.event.client_payload.repository }} ${{ github.event_name }} ${{ github.event.branch }}
-    permissions:
-      contents: read
-      packages: write
     runs-on: ubuntu-latest
     steps:
-      - uses: rekgrpth/git-clone-action@v1
-      - uses: rekgrpth/docker-login-build-push-action@v1
+      - uses: rekgrpth/git-clone-shell-action@v1
+      - uses: rekgrpth/docker-login-build-push-shell-action@v1
