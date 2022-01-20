@@ -1,13 +1,14 @@
-FROM ghcr.io/rekgrpth/gost.docker
-CMD [ "su-exec", "pgadmin", "pgadmin3" ]
+ARG DOCKER_FROM=gost.docker:latest
+FROM "ghcr.io/rekgrpth/$DOCKER_FROM"
+CMD [ "gosu", "pgadmin", "pgadmin3" ]
 ENV GROUP=pgadmin \
     USER=pgadmin
 RUN set -eux; \
-    addgroup -S "${GROUP}"; \
-    adduser -D -S -h "${HOME}" -s /sbin/nologin -G "${GROUP}" "${USER}"; \
     apk update --no-cache; \
     apk upgrade --no-cache; \
-    apk add --no-cache --virtual .build-deps \
+    addgroup -S "$GROUP"; \
+    adduser -S -D -G "$GROUP" -H -h "$HOME" -s /sbin/nologin "$USER"; \
+    apk add --no-cache --virtual .build \
         autoconf \
         automake \
         g++ \
@@ -23,24 +24,25 @@ RUN set -eux; \
         postgresql-dev \
         wxgtk-dev \
     ; \
-    mkdir -p "${HOME}/src"; \
-    cd "${HOME}/src"; \
+    mkdir -p "$HOME/src"; \
+    cd "$HOME/src"; \
     git clone https://github.com/RekGRpth/pgadmin3.git; \
-    cd "${HOME}/src/pgadmin3"; \
+    cd "$HOME/src/pgadmin3"; \
     ./bootstrap; \
     ./configure --prefix=/usr/local --with-wx-version=3.0 --with-openssl --enable-databasedesigner --with-libgcrypt --enable-debug; \
     make -j"$(nproc)" install; \
     cd /; \
-    apk add --no-cache --virtual .pgadmin-rundeps \
+    apk add --no-cache --virtual .pgadmin \
         postgresql-client \
         su-exec \
         ttf-liberation \
-        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | sort -u | while read -r lib; do test ! -e "/usr/local/lib/$lib" && echo "so:$lib"; done) \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
-    apk del --no-cache .build-deps; \
-    find /usr -type f -name "*.a" -delete; \
+    apk del --no-cache .build; \
+    rm -rf "$HOME" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
     find /usr -type f -name "*.la" -delete; \
-    rm -rf "${HOME}" /usr/share/doc /usr/share/man /usr/local/share/doc /usr/local/share/man; \
+    mkdir -p "$HOME"; \
+    chown -R "$USER":"$GROUP" "$HOME"; \
     echo done
