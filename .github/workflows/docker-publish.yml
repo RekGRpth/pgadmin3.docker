@@ -20,7 +20,7 @@ jobs:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
+    timeout-minutes: 40
   edge:
     concurrency:
       cancel-in-progress: true
@@ -34,4 +34,4 @@ jobs:
       - uses: rekgrpth/git-clone-shell-action@v1
       - uses: rekgrpth/docker-login-build-push-shell-action@v1
       - uses: rekgrpth/github-publish-action-shell-action@v1
-    timeout-minutes: 20
+    timeout-minutes: 40
