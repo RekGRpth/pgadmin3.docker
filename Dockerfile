@@ -19,7 +19,7 @@ RUN set -eux; \
         linux-headers \
         make \
         musl-dev \
-        openssl3-dev \
+#        openssl3-dev \
         postgresql-dev \
         wxgtk-dev \
     ; \
