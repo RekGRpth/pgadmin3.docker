@@ -19,7 +19,7 @@ RUN set -eux; \
         linux-headers \
         make \
         musl-dev \
-        openssl-dev \
+        openssl3-dev \
         postgresql-dev \
         wxgtk-dev \
     ; \
@@ -35,7 +35,7 @@ RUN set -eux; \
         postgresql-client \
         su-exec \
         ttf-liberation \
-        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
+        $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | grep -v -e libcrypto | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
     find /usr/local/lib -type f -name "*.so" -exec strip '{}' \;; \
