@@ -20,7 +20,6 @@ RUN set -eux; \
         linux-headers \
         make \
         musl-dev \
-#        openssl3-dev \
         postgresql-dev \
         wxgtk-dev \
     ; \
@@ -29,7 +28,13 @@ RUN set -eux; \
     git clone https://github.com/RekGRpth/pgadmin3.git; \
     cd "$HOME/src/pgadmin3"; \
     ./bootstrap; \
-    ./configure --prefix=/usr/local --with-wx-version=3.0 --with-openssl --enable-databasedesigner --with-libgcrypt --enable-debug; \
+    ./configure \
+        --enable-databasedesigner \
+        --prefix=/usr/local \
+        --with-libgcrypt \
+        --with-openssl \
+        --with-wx-version=3.0 \
+    ; \
     make -j"$(nproc)" install; \
     cd /; \
     apk add --no-cache --virtual .pgadmin \
