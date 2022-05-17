@@ -14,6 +14,7 @@ RUN set -eux; \
         gcc \
         git \
         libgcrypt-dev \
+        libssh2-dev \
         libxml2-dev \
         libxslt-dev \
         linux-headers \
