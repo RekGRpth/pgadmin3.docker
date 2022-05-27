@@ -39,7 +39,6 @@ RUN set -eux; \
     cd /; \
     apk add --no-cache --virtual .pgadmin \
         postgresql-client \
-        su-exec \
         ttf-liberation \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | grep -v -e libcrypto | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
     ; \
