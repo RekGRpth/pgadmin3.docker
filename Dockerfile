@@ -1,4 +1,4 @@
-FROM ghcr.io/rekgrpth/gosy.docker:alpine_3_16
+FROM ghcr.io/rekgrpth/gost.docker:alpine_3_16
 CMD [ "gosu", "pgadmin", "pgadmin3" ]
 ENV GROUP=pgadmin \
     USER=pgadmin
