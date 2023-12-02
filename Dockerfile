@@ -1,8 +1,15 @@
-FROM ghcr.io/rekgrpth/gost.docker:alpine_3_16
+FROM alpine:3.16
+ADD bin /usr/local/bin
+ENTRYPOINT [ "docker_entrypoint.sh" ]
+ENV HOME=/home
+MAINTAINER RekGRpth
+WORKDIR "$HOME"
 CMD [ "gosu", "pgadmin", "pgadmin3" ]
 ENV GROUP=pgadmin \
     USER=pgadmin
 RUN set -eux; \
+    ln -fs su-exec /sbin/gosu; \
+    chmod +x /usr/local/bin/*.sh; \
     apk update --no-cache; \
     apk upgrade --no-cache; \
     addgroup -S "$GROUP"; \
@@ -38,8 +45,15 @@ RUN set -eux; \
     make -j"$(nproc)" install; \
     cd /; \
     apk add --no-cache --virtual .pgadmin \
+        busybox-extras \
+        busybox-suid \
+        ca-certificates \
+        musl-locales \
         postgresql-client \
+        shadow \
+        su-exec \
         ttf-liberation \
+        tzdata \
         $(scanelf --needed --nobanner --format '%n#p' --recursive /usr/local | tr ',' '\n' | grep -v "^$" | grep -v -e libcrypto | sort -u | while read -r lib; do test -z "$(find /usr/local/lib -name "$lib")" && echo "so:$lib"; done) \
     ; \
     find /usr/local/bin -type f -exec strip '{}' \;; \
